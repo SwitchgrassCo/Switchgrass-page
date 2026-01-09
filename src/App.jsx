@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import hempScreenshot from './assets/sd-hemp-action.png';
-import logo from './assets/logo.png';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -9,12 +8,10 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // For now, just show success. Later you can add actual form handling.
     setFormSubmitted(true);
   };
 
   const styles = {
-    // Base styles
     container: {
       fontFamily: "'Instrument Sans', 'Helvetica Neue', sans-serif",
       backgroundColor: '#FAFAFA',
@@ -22,8 +19,6 @@ const App = () => {
       minHeight: '100vh',
       lineHeight: 1.6,
     },
-    
-    // Navigation
     nav: {
       position: 'fixed',
       top: 0,
@@ -39,6 +34,9 @@ const App = () => {
       borderBottom: '1px solid rgba(0,0,0,0.06)',
     },
     logo: {
+      fontSize: '18px',
+      fontWeight: 600,
+      letterSpacing: '-0.02em',
       cursor: 'pointer',
     },
     navLinks: {
@@ -56,8 +54,6 @@ const App = () => {
     navLinkActive: {
       color: '#1A1A1A',
     },
-
-    // Hero section
     hero: {
       padding: '180px 48px 120px',
       maxWidth: '1200px',
@@ -103,8 +99,6 @@ const App = () => {
       border: '1px solid #1A1A1A',
       marginLeft: '16px',
     },
-
-    // Services section
     services: {
       padding: '120px 48px',
       maxWidth: '1200px',
@@ -146,8 +140,6 @@ const App = () => {
       color: '#666',
       lineHeight: 1.7,
     },
-
-    // AI Callout
     aiCallout: {
       padding: '80px 48px',
       backgroundColor: '#1A1A1A',
@@ -167,8 +159,6 @@ const App = () => {
       letterSpacing: '-0.01em',
       textAlign: 'center',
     },
-
-    // Portfolio page
     portfolio: {
       padding: '180px 48px 120px',
       maxWidth: '1200px',
@@ -228,8 +218,6 @@ const App = () => {
       borderBottom: '1px solid #1A1A1A',
       paddingBottom: '2px',
     },
-
-    // Contact page
     contact: {
       padding: '180px 48px 120px',
       maxWidth: '800px',
@@ -298,8 +286,6 @@ const App = () => {
       textAlign: 'center',
       fontSize: '15px',
     },
-
-    // Footer
     footer: {
       padding: '48px',
       borderTop: '1px solid rgba(0,0,0,0.08)',
@@ -309,7 +295,6 @@ const App = () => {
     },
   };
 
-  // Google Font import
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap';
@@ -319,7 +304,6 @@ const App = () => {
 
   const renderHome = () => (
     <>
-      {/* Hero */}
       <section style={styles.hero}>
         <h1 style={styles.heroTagline}>Modern solutions for real impact</h1>
         <p style={styles.heroSubtext}>
@@ -333,7 +317,6 @@ const App = () => {
         </button>
       </section>
 
-      {/* Services */}
       <section style={styles.services}>
         <p style={styles.sectionLabel}>What we do</p>
         <h2 style={styles.sectionTitle}>We help organizations work smarter, reach further, and make an impact.</h2>
@@ -359,7 +342,6 @@ const App = () => {
         </div>
       </section>
 
-      {/* AI Callout */}
       <section style={styles.aiCallout}>
         <div style={styles.aiCalloutInner}>
           <p style={styles.aiCalloutText}>
@@ -377,7 +359,6 @@ const App = () => {
         <h1 style={styles.sectionTitle}>Work that makes a difference</h1>
       </div>
 
-      {/* Hemp Action Tool */}
       <div style={styles.projectCard}>
         <div style={styles.projectHeader}>
           <div>
@@ -464,10 +445,9 @@ const App = () => {
 
   return (
     <div style={styles.container}>
-      {/* Navigation */}
       <nav style={styles.nav}>
         <div style={styles.logo} onClick={() => setCurrentPage('home')}>
-          <img src={logo} alt="Switchgrass Solutions" style={{ height: '40px' }} />
+          Switchgrass Solutions
         </div>
         <div style={styles.navLinks}>
           <span 
@@ -491,12 +471,10 @@ const App = () => {
         </div>
       </nav>
 
-      {/* Page Content */}
       {currentPage === 'home' && renderHome()}
       {currentPage === 'portfolio' && renderPortfolio()}
       {currentPage === 'contact' && renderContact()}
 
-      {/* Footer */}
       <footer style={styles.footer}>
         © 2026 Switchgrass Solutions. All rights reserved.
       </footer>
