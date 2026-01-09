@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import hempScreenshot from './assets/sd-hemp-action.png';
+import logo from './assets/logo.png';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -38,9 +39,6 @@ const App = () => {
       borderBottom: '1px solid rgba(0,0,0,0.06)',
     },
     logo: {
-      fontSize: '18px',
-      fontWeight: 600,
-      letterSpacing: '-0.02em',
       cursor: 'pointer',
     },
     navLinks: {
@@ -469,7 +467,7 @@ const App = () => {
       {/* Navigation */}
       <nav style={styles.nav}>
         <div style={styles.logo} onClick={() => setCurrentPage('home')}>
-          Switchgrass Solutions
+          <img src={logo} alt="Switchgrass Solutions" style={{ height: '40px' }} />
         </div>
         <div style={styles.navLinks}>
           <span 
