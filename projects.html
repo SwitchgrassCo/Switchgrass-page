@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Switchgrass Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d4059;
+            --secondary: #ea5455;
+            --border: #dcd6cc;
+            --bg: #f7f6f2;
+            --text: #2d4059;
+            --accent: #decdc3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 5vw;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .tagline {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 4rem 5vw 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            max-width: 600px;
+            color: var(--text);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* Portfolio */
+        .portfolio {
+            padding: 4rem 5vw 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .project {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .project:nth-child(even) {
+            direction: rtl;
+        }
+
+        .project:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .project-image {
+            aspect-ratio: 16/10;
+            background: var(--border);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--secondary);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .project-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(45, 64, 89, 0.15);
+        }
+
+        .project-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--bg);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+
+        .project-content h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 400;
+        }
+
+        .project-meta {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .project-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .project-link:hover {
+            background: var(--primary);
+            color: var(--bg);
+            border-color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5vw;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 300;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .nav {
+                gap: 1.5rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .project {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .project:nth-child(even) {
+                direction: ltr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo mono">SWITCHGRASS SOLUTIONS</a>
+            <nav class="nav">
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+        </div>
+        <div class="tagline mono">Legislative Engagement & Intelligence Tools</div>
+    </header>
+
+    <section class="hero">
+        <h1>Projects</h1>
+        <p class="hero-description">
+            Legislative engagement tools we've built for organizations and advocacy campaigns.
+        </p>
+    </section>
+
+    <section class="portfolio">
+        <div class="portfolio-grid">
+            <div class="project">
+                <div class="project-image">
+                    <div class="project-placeholder">🏢</div>
+                </div>
+                <div class="project-content">
+                    <h3>SD Data Center Action</h3>
+                    <p class="project-meta mono">Legislative Advocacy Platform</p>
+                    <p class="project-description">
+                        Constituent engagement platform focused on data center development policy. Combines district-level legislator matching, structured messaging, and streamlined outreach to generate clear, organized participation around a complex issue.
+                    </p>
+                    <a href="https://datacentersd.netlify.app/" target="_blank" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image">
+                    <div class="project-placeholder">🌿</div>
+                </div>
+                <div class="project-content">
+                    <h3>SD Hemp Action</h3>
+                    <p class="project-meta mono">Issue Advocacy Tool</p>
+                    <p class="project-description">
+                        Issue-focused legislative engagement tool for hemp policy. Translates complex statutory language into clear positions and enables fast, structured outreach—making it easier to see how sentiment forms as legislation evolves.
+                    </p>
+                    <a href="https://sdhemp.netlify.app/" target="_blank" class="project-link">View Project →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        © 2025 Switchgrass Solutions. Built for advocacy that counts.
+    </footer>
+</body>
+</html>

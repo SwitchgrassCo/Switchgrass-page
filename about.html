@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Switchgrass Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d4059;
+            --secondary: #ea5455;
+            --border: #dcd6cc;
+            --bg: #f7f6f2;
+            --text: #2d4059;
+            --accent: #decdc3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 5vw;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .tagline {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 4rem 5vw 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* About Content */
+        .about-content {
+            padding: 2rem 5vw 6rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            color: var(--text);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5vw;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 300;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .nav {
+                gap: 1.5rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo mono">SWITCHGRASS SOLUTIONS</a>
+            <nav class="nav">
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+        </div>
+        <div class="tagline mono">Legislative Engagement & Intelligence Tools</div>
+    </header>
+
+    <section class="hero">
+        <h1>About</h1>
+    </section>
+
+    <section class="about-content">
+        <p>
+            Switchgrass Solutions builds legislative engagement platforms designed for people who work in and around the policy process. Our tools simplify complex legislation, streamline constituent communication, and create structure where legislative work is often noisy.
+        </p>
+        <p>
+            Our platforms are used by organizations, policymakers, and advocacy teams that need more than raw volume. By structuring engagement correctly, we help surface patterns—how positions differ by district, which arguments are driving participation, and how sentiment shifts over time.
+        </p>
+        <p>
+            We create solutions where simplicity meets impact—easy enough for any constituent to use, powerful enough to drive real policy outcomes.
+        </p>
+    </section>
+
+    <footer>
+        © 2025 Switchgrass Solutions. Built for advocacy that counts.
+    </footer>
+</body>
+</html>
