@@ -3,500 +3,2466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Switchgrass Solutions — Legislative Engagement & Intelligence Tools</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <title>SD Data Center Action - Contact Your Legislators</title>
+    
+    <!-- Meta Description -->
+    <meta name="description" content="Have your say on HB 1005 — the 50-year data center tax exemption bill. Find and contact your South Dakota legislators today.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://datacentersd.netlify.app/">
+    <meta property="og:title" content="SD Data Center Action - Contact Your Legislators">
+    <meta property="og:description" content="Have your say on HB 1005 — the 50-year data center tax exemption bill. Find and contact your South Dakota legislators today.">
+    <meta property="og:image" content="https://datacentersd.netlify.app/og-image.jpg?v=2">
+    <meta property="fb:app_id" content="0">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://datacentersd.netlify.app/">
+    <meta property="twitter:title" content="SD Data Center Action - Contact Your Legislators">
+    <meta property="twitter:description" content="Have your say on HB 1005 — the 50-year data center tax exemption bill. Find and contact your South Dakota legislators today.">
+    <meta property="twitter:image" content="https://datacentersd.netlify.app/og-image.jpg?v=2">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzw7FTZK7ahYT8nYuMwcgD5WSXk6asSLo&libraries=places&callback=Function.prototype"></script>
     <style>
-        :root {
-            --primary: #2d4059;
-            --secondary: #ea5455;
-            --border: #dcd6cc;
-            --bg: #f7f6f2;
-            --text: #2d4059;
-            --accent: #decdc3;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Lexend', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
+        :root {
+            --blue-dark: #1a2d4e;
+            --blue-mid: #2d4a7a;
+            --blue-light: #4a7fb8;
+            --blue-accent: #7ab8e8;
+            --cream: #f5f7fa;
+            --cream-dark: #e1e5eb;
+            --gold: #c99a4a;
+            --gold-light: #e5c88a;
+            --text-dark: #1a1a1a;
+            --text-mid: #4a4a4a;
+            --error: #c94a4a;
         }
 
-        .mono {
-            font-family: 'Lexend', sans-serif;
-            font-weight: 400;
-            letter-spacing: -0.01em;
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
         }
 
         /* Header */
-        header {
-            padding: 3rem 5vw;
-            border-bottom: 1px solid var(--border);
-            position: relative;
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-dark);
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 0.05em;
-            color: var(--primary);
-            opacity: 0;
-            animation: fadeInDown 0.8s ease forwards;
-            text-decoration: none;
-        }
-
-        .nav {
-            display: flex;
-            gap: 2rem;
-            opacity: 0;
-            animation: fadeInDown 0.8s ease 0.1s forwards;
-        }
-
-        .nav-link {
-            font-family: 'Lexend', sans-serif;
-            font-weight: 400;
-            font-size: 0.95rem;
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--secondary);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--secondary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .tagline {
-            font-size: 0.85rem;
-            color: var(--secondary);
-            margin-top: 0.5rem;
-            font-weight: 300;
-            opacity: 0;
-            animation: fadeInDown 0.8s ease 0.2s forwards;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 8rem 5vw 6rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 7vw, 5rem);
-            font-weight: 600;
-            line-height: 1.1;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            letter-spacing: -0.02em;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.3s forwards;
-        }
-
-        .hero h1 span {
-            display: block;
-            font-weight: 300; color: #ea5455; font-style: normal;
-        }
-
-        .hero-description {
-            font-size: 1.25rem;
-            max-width: 600px;
-            color: var(--text);
-            font-weight: 300;
-            line-height: 1.7;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.5s forwards;
-        }
-
-        /* Services */
-        .services {
-            padding: 4rem 5vw;
-            background: #2d4059;
-            color: var(--bg);
-        }
-
-        .services-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            padding-top: 3rem;
-        }
-
-        .service-card {
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .service-card:nth-child(1) { animation-delay: 0.6s; }
-        .service-card:nth-child(2) { animation-delay: 0.75s; }
-        .service-card:nth-child(3) { animation-delay: 0.9s; }
-
-        .service-number {
+        .header-icon {
             font-size: 3rem;
-            font-weight: 300;
-            color: var(--border);
             margin-bottom: 1rem;
-            line-height: 1;
         }
 
-        .service-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--blue-dark);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
         }
 
-        .service-description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: var(--bg);
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        .section-title {
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            opacity: 0.7;
-        }
-
-        /* Portfolio */
-        .portfolio {
-            padding: 6rem 5vw;
-            max-width: 1200px;
+        .header p {
+            color: var(--text-mid);
+            font-size: 1.1rem;
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        .portfolio-grid {
-            display: grid;
-            gap: 4rem;
-            margin-top: 3rem;
+        /* Steps indicator */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
         }
 
-        .project {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+        .step {
+            display: flex;
             align-items: center;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            border: 2px solid var(--cream-dark);
+            transition: all 0.3s ease;
         }
 
-        .project:nth-child(1) { animation-delay: 0.7s; }
-        .project:nth-child(2) { animation-delay: 0.9s; }
-
-        .project:nth-child(even) {
-            direction: rtl;
+        .step.active {
+            background: var(--blue-dark);
+            color: white;
+            border-color: var(--blue-dark);
         }
 
-        .project:nth-child(even) > * {
-            direction: ltr;
+        .step.completed {
+            background: var(--blue-light);
+            color: white;
+            border-color: var(--blue-light);
         }
 
-        .project-image {
-            aspect-ratio: 16/10;
-            background: var(--border);
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--secondary);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .project-image:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(26, 58, 26, 0.15);
-        }
-
-        .project-placeholder {
-            width: 100%;
-            height: 100%;
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--cream-dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: var(--bg);
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            font-weight: 600;
+            font-size: 0.8rem;
         }
 
-        .project-content h3 {
-            font-size: 2rem;
+        .step.active .step-number,
+        .step.completed .step-number {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Card styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .card-header p {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--primary);
-            font-weight: 400;
+            color: var(--text-dark);
         }
 
-        .project-meta {
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+            border: 2px solid var(--cream-dark);
+            border-radius: 12px;
+            background: var(--cream);
+            transition: all 0.2s ease;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--blue-light);
+            background: white;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: #aaa;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0;
+        }
+
+        /* Google Places Autocomplete Styling */
+        .pac-container {
+            font-family: 'Outfit', sans-serif;
+            border-radius: 8px;
+            margin-top: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 2px solid var(--blue-light);
+        }
+        
+        .pac-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-top: 1px solid var(--cream-dark);
+        }
+        
+        .pac-item:first-child {
+            border-top: none;
+        }
+        
+        .pac-item:hover {
+            background-color: var(--cream);
+        }
+        
+        .pac-item-query {
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .pac-icon {
+            margin-right: 8px;
+        }
+
+        /* Select dropdown styling */
+        select {
+            font-family: 'Outfit', sans-serif;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d4a7a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: var(--blue-light);
+            background-color: white;
+        }
+
+        /* Autocomplete dropdown */
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--blue-light);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-top: -2px;
+        }
+
+        .autocomplete-item {
+            padding: 0.875rem 1.25rem;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+            border-bottom: 1px solid var(--cream-dark);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.selected {
+            background-color: var(--cream);
+        }
+
+        .autocomplete-item.keyboard-selected {
+            background-color: var(--blue-light);
+            color: white;
+        }
+
+        .autocomplete-loading,
+        .autocomplete-no-results {
+            padding: 0.875rem 1.25rem;
+            color: var(--text-mid);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .input-hint {
             font-size: 0.85rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
+            color: var(--text-mid);
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
             font-weight: 500;
         }
 
-        .project-description {
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
             font-size: 1rem;
-            line-height: 1.7;
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            font-weight: 300;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .project-link {
-            display: inline-block;
-            padding: 0.75rem 2rem;
-            background: transparent;
-            border: 1px solid var(--secondary);
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            font-weight: 400;
+        .btn-primary {
+            background: var(--blue-dark);
+            color: white;
         }
 
-        .project-link:hover {
-            background: var(--primary);
-            color: var(--bg);
-            border-color: var(--primary);
+        .btn-primary:hover {
+            background: var(--blue-mid);
+            transform: translateY(-2px);
         }
 
-        /* About */
-        .about {
-            padding: 6rem 5vw;
-            background: linear-gradient(135deg, #2d4059 0%, #3e5266 100%);
-            color: var(--bg);
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--blue-dark);
+            border: 2px solid var(--blue-dark);
         }
 
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
+        .btn-secondary:hover {
+            background: var(--cream-dark);
         }
 
-        .about-content p {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-
-        .about-content p:last-child {
-            animation-delay: 1.2s;
-        }
-
-        .about-content p:nth-child(3) {
-            animation-delay: 1s;
-        }
-
-        /* Contact */
-        .contact {
-            padding: 6rem 5vw;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .contact h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            color: var(--primary);
-            font-weight: 400;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.9s forwards;
-        }
-
-        .contact-info {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1s forwards;
-        }
-
-        .contact-info a {
-            color: var(--secondary);
-            text-decoration: none;
-            border-bottom: 2px solid var(--border);
-            transition: border-color 0.3s ease;
-        }
-
-        .contact-info a:hover {
-            border-color: var(--accent);
-        }
-
-        .contact-description {
+        .btn-contact {
+            background: var(--gold);
+            color: var(--text-dark);
+            width: 100%;
+            padding: 1.25rem;
             font-size: 1.1rem;
-            color: var(--text);
-            line-height: 1.7;
-            font-weight: 300;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1.1s forwards;
         }
 
-        /* Footer */
-        footer {
-            padding: 3rem 5vw;
-            border-top: 1px solid var(--border);
+        .btn-contact:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Legislator cards */
+        .legislators-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .legislator-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--cream);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .legislator-card:hover {
+            border-color: var(--blue-light);
+        }
+
+        .legislator-card.selected {
+            background: var(--blue-dark);
+            color: white;
+        }
+
+        .legislator-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--blue-mid);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .legislator-card.selected .legislator-avatar {
+            background: var(--blue-accent);
+            color: var(--blue-dark);
+        }
+
+        .legislator-info {
+            flex: 1;
+        }
+
+        .legislator-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .legislator-role {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .legislator-party {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .legislator-card.selected .legislator-party {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Bill cards */
+        .bills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .bill-card {
+            padding: 1.25rem;
+            background: var(--cream);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bill-card:hover {
+            border-color: var(--blue-light);
+        }
+
+        .bill-card.selected {
+            background: var(--blue-dark);
+            color: white;
+            border-color: var(--blue-dark);
+        }
+
+        .bill-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--blue-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .bill-card.selected .bill-number {
+            color: var(--blue-accent);
+        }
+
+        .bill-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .bill-summary {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .bill-status {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .bill-card.selected .bill-status {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Stance selector */
+        .stance-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stance-btn {
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 2px solid var(--cream-dark);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
             text-align: center;
-            font-size: 0.85rem;
-            color: var(--secondary);
-            font-weight: 300;
+        }
+
+        .stance-btn:hover {
+            border-color: var(--blue-light);
+        }
+
+        .stance-btn.selected {
+            border-color: var(--blue-dark);
+            background: var(--blue-dark);
+            color: white;
+        }
+
+        .stance-btn .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stance-btn .label {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Message preview */
+        .message-preview {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message-preview .editable {
+            background: var(--gold-light);
+            padding: 0.1rem 0.25rem;
+            border-radius: 4px;
+        }
+
+        /* Summary section */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-mid);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* District info */
+        .district-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--blue-dark);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
         }
 
         /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .card {
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Multiple legislators select info */
+        .select-info {
+            background: var(--gold-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 1rem 1rem 2rem;
             }
 
-            .nav {
-                gap: 1.5rem;
+            .header {
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
             }
 
-            .nav-link {
+            .header-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .header p {
+                font-size: 0.95rem;
+            }
+
+            .steps {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .step {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.75rem;
+                justify-content: center;
+            }
+
+            .card {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-header {
+                margin-bottom: 1rem;
+            }
+
+            .card-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .card-header p {
                 font-size: 0.9rem;
             }
 
-            .hero {
-                padding: 5rem 5vw 4rem;
+            .form-group {
+                margin-bottom: 1rem;
             }
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .project {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .project:nth-child(even) {
-                direction: ltr;
-            }
-
-            .services-grid {
+            .stance-buttons {
                 grid-template-columns: 1fr;
             }
 
-            .contact h2 {
-                font-size: 2rem;
+            .nav-buttons {
+                flex-direction: column-reverse;
+                margin-top: 1rem;
             }
 
-            .contact-info {
-                font-size: 1.2rem;
+            /* Make alternative search options more compact on mobile */
+            .alt-search-section {
+                margin-top: 1.5rem !important;
+                padding-top: 1.5rem !important;
             }
+
+            .alt-search-text {
+                font-size: 0.85rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            .alt-search-buttons {
+                gap: 0.75rem !important;
+            }
+
+            .btn {
+                font-size: 0.95rem;
+                padding: 0.75rem 1.25rem;
+            }
+        }
+
+        /* Reset link */
+        .reset-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-mid);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .reset-link:hover {
+            color: var(--blue-dark);
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-mid);
+        }
+
+        /* Success state */
+        .success-message {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-message .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message h2 {
+            font-size: 1.8rem;
+            color: var(--blue-dark);
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            color: var(--text-mid);
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--cream-dark);
+            border-top-color: var(--blue-dark);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <a href="index.html" class="logo mono">SWITCHGRASS SOLUTIONS</a>
-            <nav class="nav">
-                <a href="projects.html" class="nav-link">Projects</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="contact.html" class="nav-link">Contact</a>
-            </nav>
-        </div>
-        <div class="tagline mono">Legislative Engagement & Intelligence Tools</div>
-    </header>
+    <div id="root"></div>
 
-    <section class="hero">
-        <h1>
-            Advocacy tools that<br>
-            <span>measure what matters</span>
-        </h1>
-        <p class="hero-description">
-            We build modern legislative tools that simplify engagement, surface real-world feedback, and help organizations understand what’s resonating—by district, by issue, and over time.
-        </p>
-    </section>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-    <section class="services">
-        <div class="section-title mono">What We Build</div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-number mono">01</div>
-                <h3 class="service-title">Advocacy Platforms</h3>
-                <p class="service-description">
-                    Purpose-built engagement platforms that handle the complexity in the background—accurate legislator matching, clear issue framing, and optional message guidance—so participation is fast, informed, and effective.
-                </p>
-            </div>
-            <div class="service-card">
-                <div class="service-number mono">02</div>
-                <h3 class="service-title">Campaign Insights</h3>
-                <p class="service-description">
-                    Built-in insight tools reveal how engagement is forming across districts—highlighting participation levels, prevailing positions, and the underlying reasons people give for their views.
-                </p>
-            </div>
-            <div class="service-card">
-                <div class="service-number mono">03</div>
-                <h3 class="service-title">Multi-Purpose Tools</h3>
-                <p class="service-description">
-                    Flexible platforms designed to support multiple use cases—from public-facing engagement to internal analysis—without rebuilding tools every time an issue or audience changes.
-                </p>
-            </div>
-        </div>
-    </section>
+        // South Dakota Legislators data (2026 session)
+        // From SDLRC API Session 71
+        const legislators = {
+            1: { members: [
+                { name: "Michael Rohl", party: "R", email: "michael.rohl@sdlegislature.gov", chamber: "Senate" },
+                { name: "Nick Fosness", party: "R", email: "nick.fosness@sdlegislature.gov", chamber: "House" },
+                { name: "Logan Manhart", party: "R", email: "logan.manhart@sdlegislature.gov", chamber: "House" },
+            ]},
+            2: { members: [
+                { name: "John Sjaarda", party: "R", email: "john.sjaarda@sdlegislature.gov", chamber: "House" },
+                { name: "Steve Kolbeck", party: "R", email: "steve.kolbeck@sdlegislature.gov", chamber: "Senate" },
+                { name: "David Kull", party: "R", email: "david.kull@sdlegislature.gov", chamber: "House" },
+            ]},
+            3: { members: [
+                { name: "Al Novstrup", party: "R", email: "al.novstrup@sdlegislature.gov", chamber: "House" },
+                { name: "Carl Perry", party: "R", email: "carl.perry@sdlegislature.gov", chamber: "Senate" },
+                { name: "Brandei Schaefbauer", party: "R", email: "brandei.schaefbauer@sdlegislature.gov", chamber: "House" },
+            ]},
+            4: { members: [
+                { name: "Stephanie Sauder", party: "R", email: "stephanie.sauder@sdlegislature.gov", chamber: "Senate" },
+                { name: "Dylan Jordan", party: "R", email: "dylan.jordan@sdlegislature.gov", chamber: "House" },
+                { name: "Kent Roe", party: "R", email: "kent.roe@sdlegislature.gov", chamber: "House" },
+            ]},
+            5: { members: [
+                { name: "Glen Vilhauer", party: "R", email: "glen.vilhauer@sdlegislature.gov", chamber: "Senate" },
+                { name: "Josephine Garcia", party: "R", email: "josephine.garcia@sdlegislature.gov", chamber: "House" },
+                { name: "Matt Roby", party: "R", email: "matt.roby@sdlegislature.gov", chamber: "House" },
+            ]},
+            6: { members: [
+                { name: "Ernie Otten", party: "R", email: "ernie.otten@sdlegislature.gov", chamber: "Senate" },
+                { name: "Aaron Aylward", party: "R", email: "aaron.aylward@sdlegislature.gov", chamber: "House" },
+                { name: "Tim Czmowski", party: "R", email: "tim.czmowski@sdlegislature.gov", chamber: "House" },
+            ]},
+            7: { members: [
+                { name: "Tim Reed", party: "R", email: "tim.reed@sdlegislature.gov", chamber: "Senate" },
+                { name: "Roger DeGroot", party: "R", email: "roger.degroot@sdlegislature.gov", chamber: "House" },
+                { name: "Mellissa Heermann", party: "R", email: "mellissa.heermann@sdlegislature.gov", chamber: "House" },
+            ]},
+            8: { members: [
+                { name: "Casey Crabtree", party: "R", email: "casey.crabtree@sdlegislature.gov", chamber: "Senate" },
+                { name: "Tim Reisch", party: "R", email: "tim.reisch@sdlegislature.gov", chamber: "House" },
+                { name: "Tim Walburg", party: "R", email: "tim.walburg@sdlegislature.gov", chamber: "House" },
+            ]},
+            9: { members: [
+                { name: "Bethany Soye", party: "R", email: "bethany.soye@sdlegislature.gov", chamber: "House" },
+                { name: "Joy Hohn", party: "R", email: "joy.hohn@sdlegislature.gov", chamber: "Senate" },
+                { name: "Tesa Schwans", party: "R", email: "tesa.schwans@sdlegislature.gov", chamber: "House" },
+            ]},
+            10: { members: [
+                { name: "Liz Larson", party: "D", email: "liz.larson@sdlegislature.gov", chamber: "Senate" },
+                { name: "Bobbi Andera", party: "D", email: "bobbi.andera@sdlegislature.gov", chamber: "House" },
+                { name: "Erin Healy", party: "D", email: "erin.healy@sdlegislature.gov", chamber: "House" },
+            ]},
+            11: { members: [
+                { name: "Chris Karr", party: "R", email: "chris.karr@sdlegislature.gov", chamber: "Senate" },
+                { name: "Brian Mulder", party: "R", email: "brian.mulder@sdlegislature.gov", chamber: "House" },
+                { name: "Keri Weems", party: "R", email: "keri.weems@sdlegislature.gov", chamber: "House" },
+            ]},
+            12: { members: [
+                { name: "Arch Beal", party: "R", email: "arch.beal@sdlegislature.gov", chamber: "Senate" },
+                { name: "Amber Arlint", party: "R", email: "amber.arlint@sdlegislature.gov", chamber: "House" },
+                { name: "Greg Jamison", party: "R", email: "greg.jamison@sdlegislature.gov", chamber: "House" },
+            ]},
+            13: { members: [
+                { name: "Jack Kolbeck", party: "R", email: "jack.kolbeck@sdlegislature.gov", chamber: "House" },
+                { name: "John Hughes", party: "R", email: "john.hughes@sdlegislature.gov", chamber: "House" },
+                { name: "Sue Peterson", party: "R", email: "sue.peterson@sdlegislature.gov", chamber: "Senate" },
+            ]},
+            14: { members: [
+                { name: "Larry Zikmund", party: "R", email: "larry.zikmund@sdlegislature.gov", chamber: "Senate" },
+                { name: "Tony Kayser", party: "R", email: "tony.kayser@sdlegislature.gov", chamber: "House" },
+                { name: "Taylor Rehfeldt", party: "R", email: "taylor.rehfeldt@sdlegislature.gov", chamber: "House" },
+            ]},
+            15: { members: [
+                { name: "Kadyn Wittman", party: "D", email: "kadyn.wittman@sdlegislature.gov", chamber: "House" },
+                { name: "Erik Muckey", party: "D", email: "erik.muckey@sdlegislature.gov", chamber: "House" },
+                { name: "Jamie Smith", party: "D", email: "jamie.smith@sdlegislature.gov", chamber: "Senate" },
+            ]},
+            16: { members: [
+                { name: "Kevin Jensen", party: "R", email: "kevin.jensen@sdlegislature.gov", chamber: "Senate" },
+                { name: "Karla Lems", party: "R", email: "karla.lems@sdlegislature.gov", chamber: "House" },
+                { name: "John Shubeck", party: "R", email: "john.shubeck@sdlegislature.gov", chamber: "House" },
+            ]},
+            17: { members: [
+                { name: "Sydney Davis", party: "R", email: "sydney.davis@sdlegislature.gov", chamber: "Senate" },
+                { name: "Chris Kassin", party: "R", email: "chris.kassin@sdlegislature.gov", chamber: "House" },
+                { name: "William Shorma", party: "R", email: "william.shorma@sdlegislature.gov", chamber: "House" },
+            ]},
+            18: { members: [
+                { name: "Lauren Nelson", party: "R", email: "lauren.nelson@sdlegislature.gov", chamber: "Senate" },
+                { name: "Julie Auch", party: "R", email: "julie.auch@sdlegislature.gov", chamber: "House" },
+                { name: "Mike Stevens", party: "R", email: "mike.stevens@sdlegislature.gov", chamber: "House" },
+            ]},
+            19: { members: [
+                { name: "Kyle Schoenfish", party: "R", email: "kyle.schoenfish@sdlegislature.gov", chamber: "Senate" },
+                { name: "Jessica Bahmuller", party: "R", email: "jessica.bahmuller@sdlegislature.gov", chamber: "House" },
+                { name: "Drew Peterson", party: "R", email: "drew.peterson@sdlegislature.gov", chamber: "House" },
+            ]},
+            20: { members: [
+                { name: "Paul Miskimins", party: "R", email: "paul.miskimins@sdlegislature.gov", chamber: "Senate" },
+                { name: "Jeff Bathke", party: "R", email: "jeff.bathke@sdlegislature.gov", chamber: "House" },
+                { name: "Kaley Nolz", party: "R", email: "kaley.nolz@sdlegislature.gov", chamber: "House" },
+            ]},
+            21: { members: [
+                { name: "Marty Overweg", party: "R", email: "marty.overweg@sdlegislature.gov", chamber: "House" },
+                { name: "Jim Halverson", party: "R", email: "jim.halverson@sdlegislature.gov", chamber: "House" },
+                { name: "Mykala Voita", party: "R", email: "mykala.voita@sdlegislature.gov", chamber: "Senate" },
+            ]},
+            22: { members: [
+                { name: "Lana Greenfield", party: "R", email: "lana.greenfield@sdlegislature.gov", chamber: "House" },
+                { name: "Kevin Van Diepen", party: "R", email: "kevin.vandiepen@sdlegislature.gov", chamber: "House" },
+                { name: "Brandon Wipf", party: "R", email: "brandon.wipf@sdlegislature.gov", chamber: "Senate" },
+            ]},
+            23: { members: [
+                { name: "Mark Lapka", party: "R", email: "mark.lapka@sdlegislature.gov", chamber: "Senate" },
+                { name: "Spencer Gosch", party: "R", email: "spencer.gosch@sdlegislature.gov", chamber: "House" },
+                { name: "Scott Moore", party: "R", email: "scott.moore@sdlegislature.gov", chamber: "House" },
+            ]},
+            24: { members: [
+                { name: "Jim Mehlhaff", party: "R", email: "jim.mehlhaff@sdlegislature.gov", chamber: "Senate" },
+                { name: "Will Mortenson", party: "R", email: "will.mortenson@sdlegislature.gov", chamber: "House" },
+                { name: "Mike Weisgram", party: "R", email: "mike.weisgram@sdlegislature.gov", chamber: "House" },
+            ]},
+            25: { members: [
+                { name: "Tom Pischke", party: "R", email: "tom.pischke@sdlegislature.gov", chamber: "Senate" },
+                { name: "Jon Hansen", party: "R", email: "jon.hansen@sdlegislature.gov", chamber: "House" },
+                { name: "Leslie Heinemann", party: "R", email: "leslie.heinemann@sdlegislature.gov", chamber: "House" },
+            ]},
+            26: { members: [
+                { name: "Tamara Grove", party: "R", email: "tamara.grove@sdlegislature.gov", chamber: "Senate" },
+                { name: "Eric Emery", party: "D", email: "eric.emery@sdlegislature.gov", chamber: "House" },
+                { name: "Rebecca Reimer", party: "R", email: "rebecca.reimer@sdlegislature.gov", chamber: "House" },
+            ]},
+            27: { members: [
+                { name: "Red Dawn Foster", party: "D", email: "reddawn.foster@sdlegislature.gov", chamber: "Senate" },
+                { name: "Liz May", party: "R", email: "liz.may@sdlegislature.gov", chamber: "House" },
+                { name: "Peri Pourier", party: "D", email: "peri.pourier@sdlegislature.gov", chamber: "House" },
+            ]},
+            28: { members: [
+                { name: "Sam Marty", party: "R", email: "sam.marty@sdlegislature.gov", chamber: "Senate" },
+                { name: "Jana Hunt", party: "R", email: "jana.hunt@sdlegislature.gov", chamber: "House" },
+                { name: "Travis Ismay", party: "R", email: "travis.ismay@sdlegislature.gov", chamber: "House" },
+            ]},
+            29: { members: [
+                { name: "John Carley", party: "R", email: "john.carley@sdlegislature.gov", chamber: "Senate" },
+                { name: "Terri Jorgenson", party: "R", email: "terri.jorgenson@sdlegislature.gov", chamber: "House" },
+                { name: "Kathy Rice", party: "R", email: "kathy.rice@sdlegislature.gov", chamber: "House" },
+            ]},
+            30: { members: [
+                { name: "Amber Hulse", party: "R", email: "amber.hulse@sdlegislature.gov", chamber: "Senate" },
+                { name: "Tim Goodwin", party: "R", email: "tim.goodwin@sdlegislature.gov", chamber: "House" },
+                { name: "Trish Ladner", party: "R", email: "trish.ladner@sdlegislature.gov", chamber: "House" },
+            ]},
+            31: { members: [
+                { name: "Randy Deibert", party: "R", email: "randy.deibert@sdlegislature.gov", chamber: "Senate" },
+                { name: "Mary Fitzgerald", party: "R", email: "mary.fitzgerald@sdlegislature.gov", chamber: "House" },
+                { name: "Scott Odenbach", party: "R", email: "scott.odenbach@sdlegislature.gov", chamber: "House" },
+            ]},
+            32: { members: [
+                { name: "Helene Duhamel", party: "R", email: "helene.duhamel@sdlegislature.gov", chamber: "Senate" },
+                { name: "Steve Duffy", party: "R", email: "steve.duffy@sdlegislature.gov", chamber: "House" },
+                { name: "Nicole Uhre-Balk", party: "D", email: "nicole.uhre-balk@sdlegislature.gov", chamber: "House" },
+            ]},
+            33: { members: [
+                { name: "Curt Voight", party: "R", email: "curt.voight@sdlegislature.gov", chamber: "Senate" },
+                { name: "Phil Jensen", party: "R", email: "phil.jensen@sdlegislature.gov", chamber: "House" },
+                { name: "Curt Massie", party: "R", email: "curt.massie@sdlegislature.gov", chamber: "House" },
+            ]},
+            34: { members: [
+                { name: "Taffy Howard", party: "R", email: "taffy.howard@sdlegislature.gov", chamber: "Senate" },
+                { name: "Heather Baxter", party: "R", email: "heather.baxter@sdlegislature.gov", chamber: "House" },
+                { name: "Mike Derby", party: "R", email: "mike.derby@sdlegislature.gov", chamber: "House" },
+            ]},
+            35: { members: [
+                { name: "Tina Mulally", party: "R", email: "tina.mulally@sdlegislature.gov", chamber: "House" },
+                { name: "Greg Blanc", party: "R", email: "greg.blanc@sdlegislature.gov", chamber: "Senate" },
+                { name: "Tony Randolph", party: "R", email: "tony.randolph@sdlegislature.gov", chamber: "House" },
+            ]},
+        };
 
-    <footer>
-        © 2025 Switchgrass Solutions. Built for advocacy that counts.
-    </footer>
+        // House State Affairs Committee members (HB 1005 is currently in committee)
+        const houseStateAffairsCommittee = [
+            { name: "Scott Odenbach", party: "R", email: "scott.odenbach@sdlegislature.gov", chamber: "House", role: "Chair", district: 31 },
+            { name: "Marty Overweg", party: "R", email: "marty.overweg@sdlegislature.gov", chamber: "House", role: "Vice Chair", district: 22 },
+            { name: "Jessica Bahmuller", party: "R", email: "jessica.bahmuller@sdlegislature.gov", chamber: "House", role: "Member", district: 13 },
+            { name: "Eric Emery", party: "D", email: "eric.emery@sdlegislature.gov", chamber: "House", role: "Member", district: 15 },
+            { name: "Spencer Gosch", party: "R", email: "spencer.gosch@sdlegislature.gov", chamber: "House", role: "Member", district: 23 },
+            { name: "Jon Hansen", party: "R", email: "jon.hansen@sdlegislature.gov", chamber: "House", role: "Member", district: 25 },
+            { name: "Erin Healy", party: "D", email: "erin.healy@sdlegislature.gov", chamber: "House", role: "Member", district: 10 },
+            { name: "Les Heinemann", party: "R", email: "les.heinemann@sdlegislature.gov", chamber: "House", role: "Member", district: 8 },
+            { name: "Greg Jamison", party: "R", email: "greg.jamison@sdlegislature.gov", chamber: "House", role: "Member", district: 12 },
+            { name: "Karla Lems", party: "R", email: "karla.lems@sdlegislature.gov", chamber: "House", role: "Member", district: 16 },
+            { name: "Tim Reisch", party: "R", email: "tim.reisch@sdlegislature.gov", chamber: "House", role: "Member", district: 8 },
+            { name: "Brandei Schaefbauer", party: "R", email: "brandei.schaefbauer@sdlegislature.gov", chamber: "House", role: "Member", district: 3 },
+            { name: "Bethany Soye", party: "R", email: "bethany.soye@sdlegislature.gov", chamber: "House", role: "Member", district: 9 },
+        ];
+
+        // Bill data - HB 1005 Data Center Tax Exemption
+        const bill = {
+            id: "hb1005",
+            number: "HB 1005",
+            title: "50-year sales & use tax exemption for data center equipment and software",
+            link: "https://sdlegislature.gov/Session/Bill/26605"
+        };
+
+        // Get email templates based on stance
+        const getEmailTemplates = (selectedStance) => {
+            if (selectedStance === 'support') {
+                return [
+                    {
+                        id: "jobs",
+                        name: "Jobs & Investment",
+                        icon: "💼",
+                        description: "Emphasize economic benefits: high-paying jobs and investment in local communities.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to SUPPORT HB 1005.
+
+Data centers bring high-paying jobs and significant investment to our state. A single facility can generate hundreds of millions in assessed value and millions in annual property tax revenue for local schools and counties.
+
+South Dakota is falling behind - 36 other states already offer similar incentives. Without this bill, we're losing projects to North Dakota and other neighboring states that have aligned their tax structures to attract this growing industry.
+
+Please vote YES on HB 1005 to keep South Dakota competitive.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    },
+                    {
+                        id: "competitive",
+                        name: "Stay Competitive",
+                        icon: "🏆",
+                        description: "Focus on competition with neighboring states like North Dakota.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to SUPPORT HB 1005.
+
+North Dakota just announced a $3 billion data center project. They're getting these investments because they offer competitive incentives. Meanwhile, South Dakota is being passed over.
+
+HB 1005 levels the playing field. It doesn't give data centers anything other states aren't already offering - it simply ensures South Dakota can compete for these projects.
+
+We can't afford to fall further behind our neighbors. Please vote YES on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    },
+                    {
+                        id: "property-tax",
+                        name: "Property Tax Revenue",
+                        icon: "🏫",
+                        description: "Highlight that data centers still pay property taxes that fund schools.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to SUPPORT HB 1005.
+
+While HB 1005 provides a sales tax exemption on equipment, data centers still pay full property taxes. A proposed facility in Deuel County could add $400 million in assessed value and generate over $5 million annually in property tax revenue - that's money for schools and local services.
+
+The sales tax exemption brings in projects that wouldn't come otherwise. The property taxes, energy consumption taxes, and contractor's excise taxes more than make up for it.
+
+Please vote YES on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    }
+                ];
+            } else {
+                return [
+                    {
+                        id: "corporate-giveaway",
+                        name: "Corporate Giveaway",
+                        icon: "💰",
+                        description: "Argue that 50-year exemptions for large corporations are unfair to regular taxpayers.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to OPPOSE HB 1005.
+
+A 50-year tax exemption for billion-dollar corporations is excessive and unfair. Regular South Dakota taxpayers and small businesses don't get 50-year tax breaks - why should massive tech companies?
+
+South Dakota already has low taxes and a business-friendly environment. If a company won't come here without a half-century of special treatment, maybe they're not the kind of partner we need.
+
+Please vote NO on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    },
+                    {
+                        id: "doesnt-work",
+                        name: "Incentives Don't Work",
+                        icon: "📊",
+                        description: "Cite research showing tax incentives aren't the main factor in site selection.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to OPPOSE HB 1005.
+
+Research shows tax incentives don't actually drive data center location decisions. A Microsoft executive responsible for North American data centers stated in 2024: "I can't think of a site selection or placement decision that was decided on a set of tax incentives."
+
+Data centers locate based on electricity prices, land availability, and climate - things South Dakota already has. We'd be giving away tax revenue for projects that would come anyway.
+
+Please vote NO on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    },
+                    {
+                        id: "existing-programs",
+                        name: "We Already Have Programs",
+                        icon: "📋",
+                        description: "Point out that existing state programs already allow case-by-case tax refunds.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to OPPOSE HB 1005.
+
+South Dakota already has the Reinvestment Payment Program that allows data centers to apply for sales and use tax refunds. We don't need a new 50-year blanket exemption when existing programs can handle legitimate requests case by case.
+
+Creating a special carve-out for one industry sets a bad precedent. What's next - 50-year exemptions for every industry that asks?
+
+Please vote NO on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    },
+                    {
+                        id: "water-electric",
+                        name: "Water & Electric Concerns",
+                        icon: "💧",
+                        description: "Raise concerns about resource consumption and utility rates for residents.",
+                        getMessage: (legislator, userName, userCity, userPhone) => {
+                            const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                            return `Dear ${title} ${legislator.name.split(' ').pop()},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing to urge you to OPPOSE HB 1005.
+
+Data centers consume massive amounts of electricity and water. I'm concerned about the impact on utility rates for existing residents and strain on local water supplies.
+
+While HB 1005 includes some language about not shifting costs to other ratepayers, a 50-year exemption gives these corporations enormous leverage over our communities for decades to come.
+
+Let's not give away the store. Please vote NO on HB 1005.
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`;
+                        }
+                    }
+                ];
+            }
+        };
+
+        const emailTemplates = [];
+
+        function App() {
+            const [step, setStep] = useState(1);
+            const [address, setAddress] = useState('');
+            const [district, setDistrict] = useState(null);
+            const [stance, setStance] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const [selectedLegislators, setSelectedLegislators] = useState([]);
+            const [selectedTemplate, setSelectedTemplate] = useState(null);
+            const [userName, setUserName] = useState('');
+            const [userCity, setUserCity] = useState('');
+            const [userPhone, setUserPhone] = useState('');
+            const [customMessage, setCustomMessage] = useState('');
+            const [copied, setCopied] = useState(false);
+            const [error, setError] = useState('');
+            const [emailsSent, setEmailsSent] = useState(0);
+            const [matchedAddress, setMatchedAddress] = useState('');
+            const [showMap, setShowMap] = useState(false);
+            const [mapCenter, setMapCenter] = useState([44.5, -100.0]);
+            const [contactMode, setContactMode] = useState(null); // 'committee' or 'district'
+            
+            // Alternative search methods
+            const [showDistrictSelect, setShowDistrictSelect] = useState(false);
+            const [showNameSearch, setShowNameSearch] = useState(false);
+            const [nameSearchQuery, setNameSearchQuery] = useState('');
+            
+            // Google Places Autocomplete
+            const [autocomplete, setAutocomplete] = useState(null);
+            const inputRef = useRef(null);
+            
+            // Initialize Google Places Autocomplete
+            useEffect(() => {
+                if (!window.google || !inputRef.current) return;
+                
+                // South Dakota center coordinates and bounds
+                const sdCenter = new window.google.maps.LatLng(44.5, -100.0);
+                const sdBounds = new window.google.maps.LatLngBounds(
+                    new window.google.maps.LatLng(42.4, -104.5), // Southwest corner
+                    new window.google.maps.LatLng(46.0, -96.4)   // Northeast corner
+                );
+                
+                const options = {
+                    types: ['address'],
+                    componentRestrictions: { country: 'us' },
+                    fields: ['formatted_address', 'geometry', 'address_components'],
+                    bounds: sdBounds,  // Bias results to SD bounds
+                    strictBounds: true  // Only show results within bounds
+                };
+                
+                const autocompleteInstance = new window.google.maps.places.Autocomplete(
+                    inputRef.current,
+                    options
+                );
+                
+                // Listen for place selection
+                autocompleteInstance.addListener('place_changed', async () => {
+                    const place = autocompleteInstance.getPlace();
+                    
+                    if (!place.geometry) {
+                        setError('Please select an address from the dropdown');
+                        return;
+                    }
+                    
+                    // Check if it's in South Dakota
+                    const stateComponent = place.address_components?.find(
+                        component => component.types.includes('administrative_area_level_1')
+                    );
+                    
+                    if (stateComponent?.short_name !== 'SD') {
+                        setError('Please select an address in South Dakota');
+                        setAddress('');
+                        return;
+                    }
+                    
+                    // Set the formatted address
+                    setAddress(place.formatted_address);
+                    
+                    // Get coordinates and lookup district
+                    const lat = place.geometry.location.lat();
+                    const lng = place.geometry.location.lng();
+                    await lookupDistrictFromCoords(lat, lng, place.formatted_address);
+                });
+                
+                setAutocomplete(autocompleteInstance);
+            }, [inputRef.current]);
+            
+            // Lookup district from coordinates
+            const lookupDistrictFromCoords = async (lat, lng, matchedAddr) => {
+                setLoading(true);
+                setError('');
+                
+                try {
+                    // Use TIGERweb to get district from coordinates
+                    const tigerUrl = `https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/identify?` +
+                        `geometry=${lng},${lat}&geometryType=esriGeometryPoint&sr=4326&` +
+                        `layers=all:1&tolerance=0&mapExtent=-104,43,-96,46&imageDisplay=800,600,96&` +
+                        `returnGeometry=false&f=json`;
+                    
+                    const tigerResponse = await fetch(tigerUrl);
+                    const tigerData = await tigerResponse.json();
+                    
+                    if (tigerData.results && tigerData.results.length > 0) {
+                        const districtName = tigerData.results[0].attributes.BASENAME || tigerData.results[0].attributes.NAME;
+                        const districtNum = parseInt(districtName, 10);
+                        
+                        if (legislators[districtNum]) {
+                            setDistrict(districtNum);
+                            setMatchedAddress(matchedAddr);
+                            goToStep(2);
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    
+                    // TIGERweb failed - show map centered on location
+                    setMapCenter([lat, lng]);
+                    setShowMap(true);
+                    setError('Could not determine district. Click your exact location on the map.');
+                    
+                } catch (err) {
+                    console.error('District lookup error:', err);
+                    setMapCenter([lat, lng]);
+                    setShowMap(true);
+                    setError('Lookup failed. Click your location on the map below.');
+                }
+                setLoading(false);
+            };
+
+            const lookupDistrict = async () => {
+                setError('');
+                const input = address.trim();
+                
+                if (input.length < 3) {
+                    setError('Please start typing and select an address from the dropdown');
+                    return;
+                }
+
+                setLoading(true);
+                
+                try {
+                    // Use Google Geocoding API for manual address entry
+                    const geocoder = new window.google.maps.Geocoder();
+                    
+                    geocoder.geocode(
+                        { 
+                            address: input,
+                            componentRestrictions: { country: 'US' }
+                        },
+                        async (results, status) => {
+                            if (status === 'OK' && results[0]) {
+                                const result = results[0];
+                                
+                                // Check if it's in South Dakota
+                                const stateComponent = result.address_components?.find(
+                                    component => component.types.includes('administrative_area_level_1')
+                                );
+                                
+                                if (stateComponent?.short_name !== 'SD') {
+                                    setMapCenter([44.5, -100.0]);
+                                    setShowMap(true);
+                                    setError('Please enter a South Dakota address, or click your location on the map.');
+                                    setLoading(false);
+                                    return;
+                                }
+                                
+                                const lat = result.geometry.location.lat();
+                                const lng = result.geometry.location.lng();
+                                await lookupDistrictFromCoords(lat, lng, result.formatted_address);
+                            } else {
+                                setMapCenter([44.5, -100.0]);
+                                setShowMap(true);
+                                setError('Address not found. Click your location on the map below.');
+                                setLoading(false);
+                            }
+                        }
+                    );
+                    
+                } catch (err) {
+                    console.error('Lookup error:', err);
+                    setMapCenter([44.5, -100.0]);
+                    setShowMap(true);
+                    setError('Lookup failed. Click your location on the map below.');
+                    setLoading(false);
+                }
+            };
+
+            const handleMapClick = async (lat, lng) => {
+                setLoading(true);
+                setError('');
+                
+                try {
+                    const url = `https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/identify?` +
+                        `geometry=${lng},${lat}&geometryType=esriGeometryPoint&sr=4326&` +
+                        `layers=all:1&tolerance=0&mapExtent=-104,43,-96,46&imageDisplay=800,600,96&` +
+                        `returnGeometry=false&f=json`;
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.results && data.results.length > 0) {
+                        const districtName = data.results[0].attributes.BASENAME || data.results[0].attributes.NAME;
+                        const districtNum = parseInt(districtName, 10);
+                        
+                        if (legislators[districtNum]) {
+                            setDistrict(districtNum);
+                            setMatchedAddress(`Selected location (District ${districtNum})`);
+                            setShowMap(false);
+                            goToStep(2);
+                        } else {
+                            setError(`District ${districtNum} not found. Try clicking again.`);
+                        }
+                    } else {
+                        setError('Could not determine district. Make sure you clicked within South Dakota.');
+                    }
+                } catch (err) {
+                    console.error('Map click error:', err);
+                    setError('Error looking up district. Please try again.');
+                }
+                setLoading(false);
+            };
+
+            const toggleLegislator = (legislator, type) => {
+                const id = `${type}-${legislator.name}`;
+                const exists = selectedLegislators.find(l => l.id === id);
+                
+                if (exists) {
+                    setSelectedLegislators(selectedLegislators.filter(l => l.id !== id));
+                } else {
+                    setSelectedLegislators([...selectedLegislators, { ...legislator, id, type }]);
+                }
+            };
+
+            const isLegislatorSelected = (legislator, type) => {
+                const id = `${type}-${legislator.name}`;
+                return selectedLegislators.some(l => l.id === id);
+            };
+
+            const openMailto = (legislator) => {
+                const subject = encodeURIComponent(stance === 'support' ? 'Please Support HB 1005' : 'Please Oppose HB 1005');
+                const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                // Replace the greeting with the proper title for this specific legislator
+                const personalizedMessage = customMessage.replace(
+                    /Dear (Senator|Representative) \w+,/,
+                    `Dear ${title} ${legislator.name.split(' ').pop()},`
+                );
+                const body = encodeURIComponent(personalizedMessage);
+                window.open(`mailto:${legislator.email}?subject=${subject}&body=${body}`, '_blank');
+                setEmailsSent(prev => prev + 1);
+            };
+
+            const sendAllEmails = () => {
+                selectedLegislators.forEach((legislator, index) => {
+                    setTimeout(() => {
+                        openMailto(legislator);
+                    }, index * 500); // Stagger to prevent browser blocking
+                });
+            };
+
+            const reset = () => {
+                goToStep(1);
+                setAddress('');
+                setDistrict(null);
+                setMatchedAddress('');
+                setSelectedLegislators([]);
+                setStance(null);
+                setSelectedTemplate(null);
+                setCustomMessage('');
+                setCopied(false);
+                setUserName('');
+                setUserCity('');
+                setUserPhone('');
+                setError('');
+                setEmailsSent(0);
+                setShowMap(false);
+                setMapCenter([44.5, -100.0]);
+            };
+
+            // Google Sheets Analytics Tracking
+            const trackToSheet = async (stance, district, template) => {
+                try {
+                    await fetch('https://script.google.com/macros/s/AKfycby7ih3tHPUfalCpGMvQw2Ey7Vk6vAZCc4ptTw44EF_8rXFlxfQ_fAjdGDs-OAjzly_6/exec', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            stance: stance,
+                            district: district,
+                            template: template
+                        })
+                    });
+                    console.log('[Analytics] Tracked to sheet:', stance, district, template);
+                } catch (error) {
+                    console.error('[Analytics] Error tracking:', error);
+                }
+            };
+
+            const goToStep = (stepNumber) => {
+                setStep(stepNumber);
+                
+                // Scroll after React updates the DOM
+                setTimeout(() => {
+                    if (stepNumber === 1) {
+                        // Scroll to top for step 1
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        // Scroll so the steps indicator and card are visible at the top
+                        const stepsElement = document.querySelector('.steps');
+                        if (stepsElement) {
+                            const yOffset = -20; // Small padding
+                            const y = stepsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                        }
+                    }
+                }, 100); // Slightly longer delay to ensure DOM updates
+            };
+
+            const districtData = district ? legislators[district] : null;
+
+            return (
+                <div className="app-container">
+                    {step === 1 && (
+                        <header className="header">
+                            <div className="header-icon">🏢</div>
+                            <h1>SD Data Center Action</h1>
+                            <p>
+                                Have your say on HB 1005 — the 50-year data center tax exemption bill.
+                                <br />
+                                <a href="https://mylrc.sdlegislature.gov/api/Documents/291571.pdf" target="_blank" rel="noopener" style={{ color: 'var(--blue-mid)', textDecoration: 'none', fontWeight: '500' }}>📄 Read the bill</a>
+                            </p>
+                        </header>
+                    )}
+
+                    <div className="steps">
+                        <div 
+                            className={`step ${step >= 1 ? 'active' : ''} ${step > 1 ? 'completed' : ''}`}
+                            onClick={() => step > 1 && goToStep(1)}
+                            style={{ cursor: step > 1 ? 'pointer' : 'default' }}
+                        >
+                            <span className="step-number">1</span>
+                            Find Reps
+                        </div>
+                        <div 
+                            className={`step ${step >= 2 ? 'active' : ''} ${step > 2 ? 'completed' : ''}`}
+                            onClick={() => step > 2 && district && goToStep(2)}
+                            style={{ cursor: step > 2 && district ? 'pointer' : 'default' }}
+                        >
+                            <span className="step-number">2</span>
+                            Select
+                        </div>
+                        <div 
+                            className={`step ${step >= 3 ? 'active' : ''} ${step > 3 ? 'completed' : ''}`}
+                            onClick={() => step > 3 && selectedLegislators.length > 0 && goToStep(3)}
+                            style={{ cursor: step > 3 && selectedLegislators.length > 0 ? 'pointer' : 'default' }}
+                        >
+                            <span className="step-number">3</span>
+                            Stance
+                        </div>
+                        <div 
+                            className={`step ${step >= 4 ? 'active' : ''} ${step > 4 ? 'completed' : ''}`}
+                        >
+                            <span className="step-number">4</span>
+                            Send
+                        </div>
+                    </div>
+
+                    {/* Step 1: Choose Path */}
+                    {step === 1 && (
+                        <>
+                            {/* Committee Card */}
+                            <div className="card" style={{ 
+                                borderLeft: '4px solid var(--gold)',
+                                marginBottom: '1.5rem'
+                            }}>
+                                <div className="card-header">
+                                    <div style={{
+                                        display: 'inline-block',
+                                        background: 'var(--gold)',
+                                        color: 'var(--text-dark)',
+                                        padding: '0.25rem 0.75rem',
+                                        borderRadius: '50px',
+                                        fontSize: '0.8rem',
+                                        fontWeight: '600',
+                                        marginBottom: '0.75rem'
+                                    }}>
+                                        📋 Bill Status: In Committee
+                                    </div>
+                                    <h2>House State Affairs Committee</h2>
+                                    <p>HB 1005 is currently before this committee. These 13 members will vote on whether the bill advances to the full House.</p>
+                                </div>
+                                
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        setContactMode('committee');
+                                        setSelectedLegislators([]);
+                                        goToStep(2);
+                                    }}
+                                >
+                                    Contact Committee Members →
+                                </button>
+                            </div>
+
+                            {/* Divider */}
+                            <div style={{ 
+                                textAlign: 'center', 
+                                margin: '1.5rem 0',
+                                color: 'var(--text-mid)',
+                                fontSize: '0.9rem'
+                            }}>
+                                — or —
+                            </div>
+
+                            {/* Find Your Legislators Card */}
+                            <div className="card">
+                                <div className="card-header">
+                                    <h2>Find Your Legislators</h2>
+                                    <p>Enter your address to find and contact your own state legislators.</p>
+                                </div>
+                            
+                                <div className="form-group">
+                                    <label>Your Address</label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        defaultValue={address}
+                                        placeholder="500 E. Capitol Ave, Pierre, SD"
+                                        disabled={loading}
+                                    />
+                                    {error && <div className="error-message">{error}</div>}
+                                </div>
+
+                                <button className="btn btn-primary" onClick={() => { setContactMode('district'); lookupDistrict(); }} disabled={loading}>
+                                    {loading ? 'Looking up...' : 'Find My Legislators →'}
+                                </button>
+
+                                {/* Alternative Search Options */}
+                                <div className="alt-search-section" style={{ 
+                                    marginTop: '2rem', 
+                                    paddingTop: '2rem', 
+                                    borderTop: '1px solid var(--cream-dark)',
+                                    textAlign: 'center'
+                            }}>
+                                <div className="alt-search-text" style={{ 
+                                    color: 'var(--text-mid)', 
+                                    fontSize: '0.9rem',
+                                    marginBottom: '1rem'
+                                }}>
+                                    Or choose another way to find your legislators:
+                                </div>
+                                
+                                <div className="alt-search-buttons" style={{ 
+                                    display: 'flex', 
+                                    gap: '1rem', 
+                                    justifyContent: 'center',
+                                    flexWrap: 'wrap'
+                                }}>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => {
+                                            setShowDistrictSelect(true);
+                                            setShowNameSearch(false);
+                                        }}
+                                        style={{ flex: '1 1 200px', maxWidth: '250px' }}
+                                    >
+                                        📍 Select by District
+                                    </button>
+                                    
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => {
+                                            setShowNameSearch(true);
+                                            setShowDistrictSelect(false);
+                                        }}
+                                        style={{ flex: '1 1 200px', maxWidth: '250px' }}
+                                    >
+                                        🔍 Search by Name
+                                    </button>
+                                </div>
+
+                                {/* District Selector */}
+                                {showDistrictSelect && (
+                                    <div style={{ marginTop: '1.5rem' }}>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
+                                            Select Your District (1-35)
+                                        </label>
+                                        <select
+                                            value={district || ''}
+                                            onChange={(e) => {
+                                                const districtNum = parseInt(e.target.value);
+                                                if (districtNum && legislators[districtNum]) {
+                                                    setDistrict(districtNum);
+                                                    setMatchedAddress(`District ${districtNum}`);
+                                                    goToStep(2);
+                                                }
+                                            }}
+                                            style={{
+                                                width: '100%',
+                                                maxWidth: '300px',
+                                                padding: '0.875rem',
+                                                fontSize: '1rem',
+                                                border: '2px solid var(--cream-dark)',
+                                                borderRadius: '8px',
+                                                background: 'var(--cream)',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            <option value="">Choose a district...</option>
+                                            {Object.keys(legislators).sort((a, b) => parseInt(a) - parseInt(b)).map(districtNum => (
+                                                <option key={districtNum} value={districtNum}>
+                                                    District {districtNum}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {/* Name Search */}
+                                {showNameSearch && (
+                                    <div style={{ marginTop: '1.5rem' }}>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
+                                            Search for Legislators
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter legislator name..."
+                                            value={nameSearchQuery}
+                                            onChange={(e) => setNameSearchQuery(e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                maxWidth: '400px',
+                                                padding: '0.875rem',
+                                                fontSize: '1rem',
+                                                border: '2px solid var(--cream-dark)',
+                                                borderRadius: '8px',
+                                                background: 'var(--cream)'
+                                            }}
+                                        />
+                                        
+                                        {/* Selected legislators count */}
+                                        {selectedLegislators.length > 0 && (
+                                            <div style={{ 
+                                                marginTop: '1rem',
+                                                padding: '0.75rem',
+                                                background: 'var(--blue-light)',
+                                                color: 'white',
+                                                borderRadius: '8px',
+                                                textAlign: 'center',
+                                                fontWeight: '600'
+                                            }}>
+                                                {selectedLegislators.length} legislator{selectedLegislators.length !== 1 ? 's' : ''} selected
+                                            </div>
+                                        )}
+                                        
+                                        {nameSearchQuery.length >= 2 && (
+                                            <div style={{ 
+                                                marginTop: '1rem',
+                                                maxHeight: '300px',
+                                                overflowY: 'auto',
+                                                border: '2px solid var(--cream-dark)',
+                                                borderRadius: '8px',
+                                                background: 'white'
+                                            }}>
+                                                {Object.entries(legislators).flatMap(([districtNum, district]) => 
+                                                    district.members.map(member => ({
+                                                        ...member,
+                                                        districtNum: parseInt(districtNum),
+                                                        id: `name-search-${member.chamber}-${member.name}`
+                                                    }))
+                                                ).filter(member => 
+                                                    member.name.toLowerCase().includes(nameSearchQuery.toLowerCase())
+                                                ).map((member, idx) => {
+                                                    const isSelected = selectedLegislators.some(l => l.id === member.id);
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            onClick={() => {
+                                                                if (isSelected) {
+                                                                    // Remove from selection
+                                                                    setSelectedLegislators(selectedLegislators.filter(l => l.id !== member.id));
+                                                                } else {
+                                                                    // Add to selection
+                                                                    setSelectedLegislators([...selectedLegislators, {
+                                                                        ...member,
+                                                                        id: member.id,
+                                                                        type: 'name-search'
+                                                                    }]);
+                                                                }
+                                                            }}
+                                                            style={{
+                                                                padding: '1rem',
+                                                                borderBottom: '1px solid var(--cream-dark)',
+                                                                cursor: 'pointer',
+                                                                transition: 'background 0.2s',
+                                                                background: isSelected ? 'var(--cream)' : 'white',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                gap: '1rem'
+                                                            }}
+                                                            onMouseEnter={(e) => !isSelected && (e.currentTarget.style.background = '#f8f9fa')}
+                                                            onMouseLeave={(e) => !isSelected && (e.currentTarget.style.background = 'white')}
+                                                        >
+                                                            <div style={{
+                                                                width: '24px',
+                                                                height: '24px',
+                                                                borderRadius: '4px',
+                                                                border: `2px solid ${isSelected ? 'var(--blue-light)' : 'var(--cream-dark)'}`,
+                                                                background: isSelected ? 'var(--blue-light)' : 'white',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                flexShrink: 0,
+                                                                color: 'white',
+                                                                fontWeight: 'bold'
+                                                            }}>
+                                                                {isSelected && '✓'}
+                                                            </div>
+                                                            <div style={{ flex: 1 }}>
+                                                                <div style={{ fontWeight: '600', color: 'var(--blue-dark)' }}>
+                                                                    {member.name}
+                                                                </div>
+                                                                <div style={{ fontSize: '0.9rem', color: 'var(--text-mid)' }}>
+                                                                    {member.chamber === 'Senate' ? 'Senator' : 'Representative'} • District {member.districtNum} • {member.party}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                        
+                                        {/* Continue button */}
+                                        {selectedLegislators.length > 0 && (
+                                            <button 
+                                                className="btn btn-primary"
+                                                onClick={() => {
+                                                    setMatchedAddress(`${selectedLegislators.length} selected legislator${selectedLegislators.length !== 1 ? 's' : ''}`);
+                                                    goToStep(3); // Skip to message step
+                                                }}
+                                                style={{ marginTop: '1.5rem', width: '100%', maxWidth: '400px' }}
+                                            >
+                                                Continue with {selectedLegislators.length} Legislator{selectedLegislators.length !== 1 ? 's' : ''} →
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+
+                            {showMap && (
+                                <div style={{ marginTop: '1.5rem' }}>
+                                    <div style={{ 
+                                        fontWeight: '600', 
+                                        marginBottom: '0.5rem',
+                                        color: 'var(--blue-dark)'
+                                    }}>
+                                        📍 Click your location on the map:
+                                    </div>
+                                    <div 
+                                        id="map" 
+                                        style={{ 
+                                            height: '350px', 
+                                            borderRadius: '8px', 
+                                            border: '2px solid var(--cream-dark)',
+                                            cursor: 'crosshair',
+                                            background: 'var(--cream-dark)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                        ref={(el) => {
+                                            if (el && !el.hasMap) {
+                                                el.hasMap = true;
+                                                el.innerHTML = 'Loading map...';
+                                                
+                                                // Lazy load Leaflet CSS
+                                                const link = document.createElement('link');
+                                                link.rel = 'stylesheet';
+                                                link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                                                document.head.appendChild(link);
+                                                
+                                                // Lazy load Leaflet JS
+                                                const script = document.createElement('script');
+                                                script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                                                script.onload = () => {
+                                                    el.innerHTML = '';
+                                                    const map = L.map(el).setView(mapCenter, 7);
+                                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                        attribution: '© OpenStreetMap'
+                                                    }).addTo(map);
+                                                    
+                                                    // Add district boundaries as WMS layer
+                                                    L.tileLayer.wms('https://tigerweb.geo.census.gov/arcgis/services/TIGERweb/Legislative/MapServer/WMSServer', {
+                                                        layers: '1',
+                                                        format: 'image/png',
+                                                        transparent: true,
+                                                        opacity: 0.5
+                                                    }).addTo(map);
+                                                    
+                                                    let marker = null;
+                                                    map.on('click', (e) => {
+                                                        if (marker) map.removeLayer(marker);
+                                                        marker = L.marker(e.latlng).addTo(map);
+                                                        handleMapClick(e.latlng.lat, e.latlng.lng);
+                                                    });
+                                                };
+                                                document.head.appendChild(script);
+                                            }
+                                        }}
+                                    />
+                                    <div className="input-hint" style={{ marginTop: '0.5rem' }}>
+                                        District boundaries shown in blue. Click anywhere in South Dakota.
+                                    </div>
+                                </div>
+                            )}
+                            </div>
+                        </>
+                    )}
+
+                    {/* Step 2: Select Legislators */}
+                    {step === 2 && contactMode === 'committee' && (
+                        <div className="card">
+                            <div className="card-header">
+                                <div style={{
+                                    display: 'inline-block',
+                                    background: 'var(--gold)',
+                                    color: 'var(--text-dark)',
+                                    padding: '0.25rem 0.75rem',
+                                    borderRadius: '50px',
+                                    fontSize: '0.8rem',
+                                    fontWeight: '600',
+                                    marginBottom: '0.75rem'
+                                }}>
+                                    📋 House State Affairs Committee
+                                </div>
+                                <h2>Select Committee Members to Contact</h2>
+                                <p>Choose one or more committee members to send your message to.</p>
+                            </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <button
+                                    className="btn btn-secondary"
+                                    style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                                    onClick={() => {
+                                        const allSelected = houseStateAffairsCommittee.every(m => 
+                                            selectedLegislators.some(l => l.id === `committee-${m.name}`)
+                                        );
+                                        if (allSelected) {
+                                            setSelectedLegislators([]);
+                                        } else {
+                                            setSelectedLegislators(houseStateAffairsCommittee.map(m => ({
+                                                ...m,
+                                                id: `committee-${m.name}`,
+                                                type: 'committee'
+                                            })));
+                                        }
+                                    }}
+                                >
+                                    {houseStateAffairsCommittee.every(m => 
+                                        selectedLegislators.some(l => l.id === `committee-${m.name}`)
+                                    ) ? '☐ Deselect All' : '☑ Select All'}
+                                </button>
+                                <span style={{ color: 'var(--text-mid)', fontSize: '0.9rem' }}>
+                                    {selectedLegislators.length} of {houseStateAffairsCommittee.length} selected
+                                </span>
+                            </div>
+
+                            <div style={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                                gap: '0.75rem'
+                            }}>
+                                {houseStateAffairsCommittee.map((member, i) => {
+                                    const isSelected = isLegislatorSelected(member, 'committee');
+                                    return (
+                                        <div
+                                            key={i}
+                                            onClick={() => toggleLegislator(member, 'committee')}
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.75rem',
+                                                padding: '0.75rem',
+                                                borderRadius: '8px',
+                                                border: isSelected ? '2px solid var(--blue-dark)' : '2px solid var(--cream-dark)',
+                                                background: isSelected ? 'var(--blue-dark)' : 'white',
+                                                color: isSelected ? 'white' : 'var(--text-dark)',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.15s ease'
+                                            }}
+                                        >
+                                            <div style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                borderRadius: '4px',
+                                                border: isSelected ? '2px solid white' : '2px solid var(--cream-dark)',
+                                                background: isSelected ? 'white' : 'transparent',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                flexShrink: 0,
+                                                color: 'var(--blue-dark)',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 'bold'
+                                            }}>
+                                                {isSelected && '✓'}
+                                            </div>
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <div style={{ 
+                                                    fontWeight: '600', 
+                                                    fontSize: '0.9rem',
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis'
+                                                }}>
+                                                    {member.name}
+                                                    {member.role !== 'Member' && (
+                                                        <span style={{ 
+                                                            marginLeft: '0.5rem',
+                                                            fontSize: '0.7rem',
+                                                            opacity: 0.8,
+                                                            fontWeight: 'normal'
+                                                        }}>
+                                                            ({member.role})
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div style={{ 
+                                                    fontSize: '0.8rem', 
+                                                    opacity: 0.7 
+                                                }}>
+                                                    District {member.district} • {member.party}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="nav-buttons">
+                                <button className="btn btn-secondary" onClick={() => { setContactMode(null); goToStep(1); }}>
+                                    ← Back
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => goToStep(3)}
+                                    disabled={selectedLegislators.length === 0}
+                                >
+                                    Continue →
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 2: Select District Legislators */}
+                    {step === 2 && contactMode === 'district' && districtData && (
+                        <div className="card">
+                            <div className="card-header">
+                                <div className="district-badge">
+                                    📍 District {district}
+                                </div>
+                                {matchedAddress && (
+                                    <div className="input-hint" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                                        {matchedAddress}
+                                    </div>
+                                )}
+                                <h2>Select Legislators to Contact</h2>
+                                <p>Choose one or more legislators to send your message to.</p>
+                            </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <button
+                                    className="btn btn-secondary"
+                                    style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                                    onClick={() => {
+                                        const allSelected = districtData.members.every(m => 
+                                            selectedLegislators.some(l => l.id === `member-${m.name}`)
+                                        );
+                                        if (allSelected) {
+                                            setSelectedLegislators([]);
+                                        } else {
+                                            setSelectedLegislators(districtData.members.map(m => ({
+                                                ...m,
+                                                id: `member-${m.name}`,
+                                                type: 'member'
+                                            })));
+                                        }
+                                    }}
+                                >
+                                    {districtData.members.every(m => 
+                                        selectedLegislators.some(l => l.id === `member-${m.name}`)
+                                    ) ? '☐ Deselect All' : '☑ Select All'}
+                                </button>
+                                <span style={{ color: 'var(--text-mid)', fontSize: '0.9rem' }}>
+                                    {selectedLegislators.length} of {districtData.members.length} selected
+                                </span>
+                            </div>
+
+                            <div className="legislators-grid">
+                                {districtData.members.map((member, i) => (
+                                    <div
+                                        key={i}
+                                        className={`legislator-card ${isLegislatorSelected(member, 'member') ? 'selected' : ''}`}
+                                        onClick={() => toggleLegislator(member, 'member')}
+                                    >
+                                        <div className="legislator-avatar">
+                                            {member.name.split(' ').map(n => n[0]).join('')}
+                                        </div>
+                                        <div className="legislator-info">
+                                            <div className="legislator-name">{member.name}</div>
+                                            <div className="legislator-role">State {member.chamber === "Senate" ? "Senator" : "Representative"}</div>
+                                        </div>
+                                        <span className="legislator-party">{member.party}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="nav-buttons">
+                                <button className="btn btn-secondary" onClick={() => goToStep(1)}>
+                                    ← Back
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => goToStep(3)}
+                                    disabled={selectedLegislators.length === 0}
+                                >
+                                    Continue →
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 3: Select Stance and Message Template */}
+                    {step === 3 && (
+                        <div className="card">
+                            <div className="card-header">
+                                <h2>What's Your Position on HB 1005?</h2>
+                                <p>The 50-year data center tax exemption bill.</p>
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+                                <div
+                                    style={{
+                                        padding: '1.5rem',
+                                        borderRadius: '12px',
+                                        border: stance === 'support' ? '3px solid #2d7a4a' : '3px solid var(--cream-dark)',
+                                        background: stance === 'support' ? '#2d7a4a' : 'white',
+                                        color: stance === 'support' ? 'white' : 'var(--text-dark)',
+                                        cursor: 'pointer',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                    onClick={() => {
+                                        setStance('support');
+                                        setSelectedTemplate(null);
+                                        setCustomMessage('');
+                                        console.log('[Analytics] Stance selected: SUPPORT');
+                                    }}
+                                >
+                                    <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>👍</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>Support HB 1005</div>
+                                    <div style={{ fontSize: '0.85rem', opacity: 0.8, marginTop: '0.25rem' }}>Bring data center jobs to SD</div>
+                                </div>
+                                <div
+                                    style={{
+                                        padding: '1.5rem',
+                                        borderRadius: '12px',
+                                        border: stance === 'oppose' ? '3px solid #9a3a3a' : '3px solid var(--cream-dark)',
+                                        background: stance === 'oppose' ? '#9a3a3a' : 'white',
+                                        color: stance === 'oppose' ? 'white' : 'var(--text-dark)',
+                                        cursor: 'pointer',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                    onClick={() => {
+                                        setStance('oppose');
+                                        setSelectedTemplate(null);
+                                        setCustomMessage('');
+                                        console.log('[Analytics] Stance selected: OPPOSE');
+                                    }}
+                                >
+                                    <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>👎</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>Oppose HB 1005</div>
+                                    <div style={{ fontSize: '0.85rem', opacity: 0.8, marginTop: '0.25rem' }}>No 50-year corporate tax breaks</div>
+                                </div>
+                            </div>
+
+                            {stance && (
+                                <>
+                                    <div className="card-header" style={{ marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid var(--cream-dark)' }}>
+                                        <h2>Choose Your Message</h2>
+                                        <p>Select an approach that resonates with you, or start from scratch.</p>
+                                    </div>
+
+                                    <div className="bills-list">
+                                        {getEmailTemplates(stance).map(template => (
+                                            <div
+                                                key={template.id}
+                                                className={`bill-card ${selectedTemplate?.id === template.id ? 'selected' : ''}`}
+                                                onClick={() => {
+                                                    setSelectedTemplate(template);
+                                                    setCustomMessage(template.getMessage(selectedLegislators[0] || { name: 'Legislator' }, userName, userCity, userPhone));
+                                                    // Track template selection
+                                                    const districtValue = district || 'Multiple';
+                                                    trackToSheet(stance === 'support' ? 'Support' : 'Oppose', districtValue, template.name);
+                                                }}
+                                            >
+                                                <div className="bill-number">{template.icon}</div>
+                                                <div className="bill-title">{template.name}</div>
+                                                <div className="bill-summary">{template.description}</div>
+                                            </div>
+                                        ))}
+                                        <div
+                                            className={`bill-card ${selectedTemplate?.id === 'blank' ? 'selected' : ''}`}
+                                            onClick={() => {
+                                                const title = selectedLegislators[0]?.chamber === "Senate" ? "Senator" : "Representative";
+                                                const lastName = selectedLegislators[0]?.name?.split(' ').pop() || 'Legislator';
+                                                setSelectedTemplate({ id: 'blank', name: 'Start Blank' });
+                                                setCustomMessage(`Dear ${title} ${lastName},
+
+My name is ${userName || '[Your Name]'} and I am a constituent in your district. I am writing regarding HB 1005.
+
+[Write your message here]
+
+Sincerely,
+${userName || '[Your Name]'}
+${userCity ? userCity + ', SD' : '[Your City, SD]'}${userPhone ? '\n' + userPhone : ''}`);
+                                                // Track blank template selection
+                                                const districtValue = district || 'Multiple';
+                                                trackToSheet(stance === 'support' ? 'Support' : 'Oppose', districtValue, 'Start Blank');
+                                            }}
+                                        >
+                                            <div className="bill-number">✏️</div>
+                                            <div className="bill-title">Start Blank</div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="nav-buttons">
+                                <button className="btn btn-secondary" onClick={() => goToStep(2)}>
+                                    ← Back
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => goToStep(4)}
+                                    disabled={!selectedTemplate}
+                                >
+                                    Customize Message →
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 4: Edit & Send */}
+                    {step === 4 && (
+                        <div className="card">
+                            <div className="card-header">
+                                <h2>Send Your Messages</h2>
+                                <p>Review and send personalized emails to each legislator.</p>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Your Name</label>
+                                <input
+                                    type="text"
+                                    value={userName}
+                                    onChange={(e) => {
+                                        setUserName(e.target.value);
+                                        // Update message with new name
+                                        if (selectedTemplate) {
+                                            setCustomMessage(selectedTemplate.getMessage(
+                                                selectedLegislators[0] || { name: 'Legislator' },
+                                                e.target.value,
+                                                userCity,
+                                                userPhone
+                                            ));
+                                        }
+                                    }}
+                                    placeholder="Enter your name"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Your City</label>
+                                <input
+                                    type="text"
+                                    value={userCity}
+                                    onChange={(e) => {
+                                        setUserCity(e.target.value);
+                                        // Update message with new city
+                                        if (selectedTemplate) {
+                                            setCustomMessage(selectedTemplate.getMessage(
+                                                selectedLegislators[0] || { name: 'Legislator' },
+                                                userName,
+                                                e.target.value,
+                                                userPhone
+                                            ));
+                                        }
+                                    }}
+                                    placeholder="Enter your city"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Your Phone Number</label>
+                                <input
+                                    type="tel"
+                                    value={userPhone}
+                                    onChange={(e) => {
+                                        setUserPhone(e.target.value);
+                                        // Update message with new phone
+                                        if (selectedTemplate) {
+                                            setCustomMessage(selectedTemplate.getMessage(
+                                                selectedLegislators[0] || { name: 'Legislator' },
+                                                userName,
+                                                userCity,
+                                                e.target.value
+                                            ));
+                                        }
+                                    }}
+                                    placeholder="(605) 555-1234 (optional)"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Your Message <span style={{ fontWeight: 'normal', color: '#666' }}>(edit as needed)</span></label>
+                                <textarea
+                                    value={customMessage}
+                                    onChange={(e) => setCustomMessage(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        minHeight: '250px',
+                                        padding: '1rem',
+                                        border: '2px solid var(--cream-dark)',
+                                        borderRadius: '8px',
+                                        fontFamily: 'inherit',
+                                        fontSize: '0.95rem',
+                                        lineHeight: '1.6',
+                                        resize: 'vertical'
+                                    }}
+                                />
+                                <div className="input-hint" style={{ marginTop: '0.5rem' }}>
+                                    💡 This message will be personalized for each legislator with their proper title (Senator/Representative).
+                                </div>
+                            </div>
+
+                            {/* Send All Button */}
+                            {selectedLegislators.length > 1 && (
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <button
+                                        className="btn btn-contact"
+                                        onClick={() => {
+                                            selectedLegislators.forEach((legislator, index) => {
+                                                setTimeout(() => {
+                                                    openMailto(legislator);
+                                                }, index * 500);
+                                            });
+                                        }}
+                                        style={{ width: '100%', padding: '1.25rem', fontSize: '1.1rem' }}
+                                    >
+                                        📧 Send All {selectedLegislators.length} Emails
+                                    </button>
+                                    <div className="input-hint" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+                                        This will open {selectedLegislators.length} email windows in your email client.
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Individual legislator cards */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {selectedLegislators.map((legislator, index) => {
+                                    const title = legislator.chamber === "Senate" ? "Senator" : "Representative";
+                                    const personalizedMessage = customMessage.replace(
+                                        /Dear (Senator|Representative) \w+,/,
+                                        `Dear ${title} ${legislator.name.split(' ').pop()},`
+                                    );
+                                    
+                                    return (
+                                        <div 
+                                            key={legislator.id}
+                                            style={{
+                                                border: '2px solid var(--blue-light)',
+                                                borderRadius: '12px',
+                                                padding: '1.5rem',
+                                                backgroundColor: 'white'
+                                            }}
+                                        >
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                                <div>
+                                                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--blue-dark)' }}>
+                                                        {legislator.name}
+                                                    </h3>
+                                                    <div style={{ color: 'var(--text-mid)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                                                        State {title} • {legislator.party}
+                                                    </div>
+                                                    <div style={{ color: 'var(--text-mid)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+                                                        {legislator.email}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <details style={{ marginTop: '1rem' }}>
+                                                <summary style={{ 
+                                                    cursor: 'pointer', 
+                                                    color: 'var(--blue-dark)',
+                                                    fontWeight: '500',
+                                                    marginBottom: '0.5rem',
+                                                    userSelect: 'none'
+                                                }}>
+                                                    📄 Preview Message
+                                                </summary>
+                                                <div style={{
+                                                    backgroundColor: 'var(--cream)',
+                                                    padding: '1rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.9rem',
+                                                    lineHeight: '1.6',
+                                                    whiteSpace: 'pre-wrap',
+                                                    marginTop: '0.5rem'
+                                                }}>
+                                                    {personalizedMessage}
+                                                </div>
+                                            </details>
+                                            
+                                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                                                <button
+                                                    className="btn btn-contact"
+                                                    onClick={() => openMailto(legislator)}
+                                                    style={{ flex: 1 }}
+                                                >
+                                                    📧 Send Email
+                                                </button>
+                                                <button
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(personalizedMessage);
+                                                        setCopied(true);
+                                                        setTimeout(() => setCopied(false), 2000);
+                                                    }}
+                                                    style={{ flex: 1 }}
+                                                >
+                                                    {copied ? '✓ Copied!' : '📋 Copy'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="input-hint" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                                Click "Send Email" to open your email client, or "Copy" to paste the message manually.
+                            </div>
+
+                            <div className="nav-buttons">
+                                <button className="btn btn-secondary" onClick={() => goToStep(3)}>
+                                    ← Back
+                                </button>
+                            </div>
+
+                            <div className="reset-link" onClick={reset}>
+                                Start Over
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Footer */}
+                    <footer style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-mid)', fontSize: '0.85rem' }}>
+                        <p style={{ marginBottom: '1rem' }}>
+                            🔒 No personal information collected. Emails are sent directly from your device.
+                        </p>
+                        <p>
+                            Legislator data from <a href="https://sdlegislature.gov" target="_blank" rel="noopener" style={{ color: 'var(--blue-mid)' }}>sdlegislature.gov</a>
+                        </p>
+                        <p style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--cream-dark)' }}>
+                            Built by <a href="https://switchgrassco.com" target="_blank" rel="noopener" style={{ color: 'var(--blue-mid)', fontWeight: '500' }}>Switchgrass Solutions</a>
+                            <br />
+                            <span style={{ fontSize: '0.8rem' }}>Custom advocacy tools for organizations and campaigns</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
 </body>
 </html>
