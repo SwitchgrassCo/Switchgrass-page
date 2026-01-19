@@ -157,7 +157,6 @@
             border-radius: 2px;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--secondary);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
@@ -172,9 +171,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: var(--bg);
-            background: var(--primary);
+            font-size: 6rem;
+            background: #f7f6f2;
+            opacity: 0.55;
+            filter: grayscale(0.6);
         }
 
         .project-content h3 {
@@ -282,13 +282,13 @@
         <div class="portfolio-grid">
             <div class="project">
                 <div class="project-image">
-                    <img src="data-center.svg" alt="Data center advocacy platform illustration" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="project-placeholder">🏢</div>
                 </div>
                 <div class="project-content">
                     <h3>SD Data Center Action</h3>
                     <p class="project-meta mono">Legislative Advocacy Platform</p>
                     <p class="project-description">
-                        Constituent engagement platform focused on data center development policy. Combines district-level legislator matching, structured messaging, and streamlined outreach to generate clear, organized participation around a complex issue.
+                        Engagement platform focused on data center development policy. Combines district-level legislator matching, structured messaging, and streamlined outreach to generate clear, organized participation around a complex issue.
                     </p>
                     <a href="https://datacentersd.netlify.app/" target="_blank" class="project-link">View Project →</a>
                 </div>
@@ -296,13 +296,13 @@
 
             <div class="project">
                 <div class="project-image">
-                    <img src="hemp-advocacy.svg" alt="Hemp legislative advocacy illustration" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="project-placeholder">🌿</div>
                 </div>
                 <div class="project-content">
                     <h3>SD Hemp Action</h3>
                     <p class="project-meta mono">Issue Advocacy Tool</p>
                     <p class="project-description">
-                        Issue-focused legislative engagement tool for hemp policy. Translates complex statutory language into clear positions and enables fast, structured outreach—making it easier to see how sentiment forms as legislation evolves.
+                        Issue-focused legislative engagement tool for hemp policy. Turns complex statutory language into clear positions and enables fast, structured outreach— making it easier to see how sentiment forms as legislation evolves.
                     </p>
                     <a href="https://sdhemp.netlify.app/" target="_blank" class="project-link">View Project →</a>
                 </div>
@@ -311,7 +311,7 @@
     </section>
 
     <footer>
-        © 2025 Switchgrass Solutions. Built for advocacy that counts.
+        © 2026 Switchgrass Solutions. 
     </footer>
 </body>
 </html>
